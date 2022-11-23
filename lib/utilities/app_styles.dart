@@ -7,8 +7,8 @@ class Styles {
   static Color textColor = const Color(0xFF3B3B3B);
   static Color bgColor = const Color(0xEFF5F5);
   static Color successColor = const Color(0x43a047);
-  static Color warningColor = const Color(0xEFF5F5);
-  static Color errorColor = const Color(0xEFF5F5);
+  static Color warningColor = const Color(0xed6c02);
+  static Color errorColor = const Color(0xd32f2f);
   static TextStyle textStyle =
       TextStyle(color: textColor, fontSize: 16, fontWeight: FontWeight.w500);
   static TextStyle headingStyle =
