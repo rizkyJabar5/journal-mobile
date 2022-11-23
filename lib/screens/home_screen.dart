@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:journal_florist/screens/bottom_bar.dart';
+import 'package:journal_florist/widgets/bottom_bar.dart';
 
 class HomePage extends StatefulWidget {
   HomePage({Key? key}) : super(key: key);
