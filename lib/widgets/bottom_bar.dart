@@ -1,17 +1,17 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:journal_florist/screens/home.dart';
 
-class Bottombar extends StatefulWidget {
-  Bottombar({Key? key}) : super(key: key);
+class BottomBar extends StatefulWidget {
+  BottomBar({Key? key}) : super(key: key);
 
   @override
-  _BottombarState createState() => _BottombarState();
+  _BottomBarState createState() => _BottomBarState();
 }
 
-class _BottombarState extends State<Bottombar> {
+class _BottomBarState extends State<BottomBar> {
   int _selectedIndex = 0;
   static final List<Widget> _widgetOptions = <Widget>[
-    const Text("Dashboard"),
+    HomePage(),
     const Text("Customers"),
     const Text("Ledger"),
     const Text("Logout"),
@@ -35,7 +35,7 @@ class _BottombarState extends State<Bottombar> {
         elevation: 10,
         showSelectedLabels: false,
         showUnselectedLabels: false,
-        selectedItemColor: Colors.purple[300],
+        selectedItemColor: Colors.deepPurple[400],
         unselectedItemColor: Colors.blueGrey,
         type: BottomNavigationBarType.fixed,
         items: [
