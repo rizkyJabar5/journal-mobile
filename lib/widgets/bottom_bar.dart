@@ -46,12 +46,6 @@ class _BottomBarState extends State<BottomBar> {
             label: "Dashboard",
           ),
           BottomNavigationBarItem(
-            icon: Icon(Icons.people_outlined),
-            activeIcon: Icon(Icons.people_rounded),
-            tooltip: "Customers",
-            label: "Customers",
-          ),
-          BottomNavigationBarItem(
             icon: Icon(Icons.monitor_heart_outlined),
             activeIcon: Icon(Icons.monitor_heart),
             tooltip: "Ledger",
