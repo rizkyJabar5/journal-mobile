@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:journal_florist/screens/splash_screen.dart';
 import 'package:journal_florist/utilities/app_styles.dart';
 import 'package:journal_florist/widgets/bottom_bar.dart';
 
@@ -18,7 +19,7 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primaryColor: primary,
       ),
-      home: BottomBar(),
+      home: SplasScreen(),
     );
   }
 }
