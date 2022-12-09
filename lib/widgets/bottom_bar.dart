@@ -1,5 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:journal_florist/screens/home.dart';
+import 'package:journal_florist/screens/login.dart';
+import 'package:journal_florist/screens/signout.dart';
+import 'package:journal_florist/utilities/app_styles.dart';
 
 import '../screens/ledger.dart';
 
@@ -12,16 +16,39 @@ class BottomBar extends StatefulWidget {
 
 class _BottomBarState extends State<BottomBar> {
   int _selectedIndex = 0;
+
+  signOut() async {
+//     await auth.signOut();
+    Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) => LoginPage(),
+        ));
+    Fluttertoast.showToast(
+      msg: "Logout Sucessfully",
+      toastLength: Toast.LENGTH_SHORT,
+      timeInSecForIosWeb: 2,
+      backgroundColor: Styles.successColor,
+      textColor: Colors.white,
+      fontSize: 18.0,
+      gravity: ToastGravity.TOP,
+    );
+  }
+
   static final List<Widget> _widgetOptions = <Widget>[
     HomePage(),
     LedgerPage(),
-    const Text("Logout"),
+    Signout(),
   ];
 
   void _onItemTapped(int index) {
     setState(() {
       _selectedIndex = index;
     });
+
+    if (_selectedIndex == 2) {
+      signOut();
+    }
   }
 
   @override
