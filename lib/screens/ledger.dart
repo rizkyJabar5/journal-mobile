@@ -183,7 +183,7 @@ class _LedgerPageState extends State<LedgerPage> {
               Text(
                 '5.000.000',
                 style: TextStyle(
-                  color: Colors.white,
+                  color: Colors.amber,
                   fontSize: 40,
                   fontWeight: FontWeight.w600,
                   fontFamily: "Poppins",

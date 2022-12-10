@@ -11,7 +11,6 @@ class SharedPreferenceHelper {
   }
 
   String? getUserToken() {
-    final userToken = prefs.getString(token);
-    return userToken;
+    return prefs.getString(token);
   }
 }

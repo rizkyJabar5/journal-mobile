@@ -4,6 +4,7 @@ import 'dart:io';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:journal_florist/utilities/shared_preferences.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import '../utilities/endpoints.dart';
@@ -21,40 +22,8 @@ class JournalBaseHelper {
   }
 
   static Dio addInterceptors(Dio dio) {
-    return dio
-      ..interceptors.add(
-        InterceptorsWrapper(
-            onRequest: requestInterceptor,
-            onResponse: responseInterceptor,
-            onError: errorInterceptor),
-      );
+    return dio..interceptors.add(JournalInterceptor());
   }
-
-  static dynamic requestInterceptor(
-    RequestOptions options,
-    RequestInterceptorHandler handler,
-  ) async {
-    // String? token;
-    // SharedPreferences prefs = await SharedPreferences.getInstance();
-    // token = prefs.getString("accessToken");
-
-    // options.headers.addAll({
-    //   "Authorization": "Bearer $token",
-    // });
-  }
-
-  static dynamic responseInterceptor(
-      Response response, ResponseInterceptorHandler handler) async {
-    debugPrint(response.statusCode.toString() +
-        "--> ${response.requestOptions.method != null ? response.requestOptions.method.toUpperCase() : 'METHOD'} ${"" + (response.requestOptions.baseUrl ?? "") + (response.requestOptions.path ?? "")}");
-
-    if (response.data != null) {
-      log("response: ->${response.data.toString()}");
-    }
-  }
-
-  static dynamic errorInterceptor(
-      DioError error, ErrorInterceptorHandler handler) {}
 
   static final dio = createDio();
   static final baseAPI = addInterceptors(dio);
@@ -110,4 +79,36 @@ class JournalBaseHelper {
 
     return response;
   }
+}
+
+class JournalInterceptor extends Interceptor {
+  late SharedPreferenceHelper sharedPref;
+
+  dynamic requestInterceptor(
+    RequestOptions options,
+    RequestInterceptorHandler handler,
+  ) async {
+    print(
+        "--> ${options.method != null ? options.method.toUpperCase() : 'METHOD'} ${"" + (options.baseUrl ?? "") + (options.path ?? "")}");
+    print("Headers:");
+    String? token = sharedPref.getUserToken();
+
+    options.headers.addAll({
+      "Authorization": "Bearer $token",
+    });
+  }
+
+  dynamic responseInterceptor(
+    Response response,
+    ResponseInterceptorHandler handler,
+  ) async {
+    if (response.data != null) {
+      log("response: ->${response.data.toString()}");
+    }
+  }
+
+  dynamic errorInterceptor(
+    DioError error,
+    ErrorInterceptorHandler handler,
+  ) {}
 }
