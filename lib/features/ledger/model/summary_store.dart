@@ -1,6 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
 
-import 'orders.dart';
+import '../../orders/model/orders.dart';
 part 'summary_store.g.dart';
 
 @JsonSerializable()

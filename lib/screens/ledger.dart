@@ -1,9 +1,8 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
-import 'package:journal_florist/features/ledger/summaries.dart';
+import 'package:journal_florist/features/ledger/summaries_service.dart';
 import 'package:journal_florist/utilities/app_styles.dart';
 
 class LedgerPage extends StatefulWidget {
@@ -14,7 +13,7 @@ class LedgerPage extends StatefulWidget {
 }
 
 class _LedgerPageState extends State<LedgerPage> {
-  final Summaries summary = Summaries();
+  late final SummaryService summary = SummaryService();
 
   String _rp = 'Rp.';
   bool _isIncome = true;
@@ -27,10 +26,6 @@ class _LedgerPageState extends State<LedgerPage> {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint(summary
-        .getLedger()
-        .then((value) => value.totalNetSales.capitalizeFirst)
-        .toString());
 
     return Scaffold(
       appBar: AppBar(

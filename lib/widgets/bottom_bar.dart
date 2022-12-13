@@ -4,6 +4,7 @@ import 'package:journal_florist/screens/home.dart';
 import 'package:journal_florist/screens/login.dart';
 import 'package:journal_florist/screens/signout.dart';
 import 'package:journal_florist/utilities/app_styles.dart';
+import 'package:journal_florist/widgets/toast.dart';
 
 import '../screens/ledger.dart';
 
@@ -24,15 +25,7 @@ class _BottomBarState extends State<BottomBar> {
         MaterialPageRoute(
           builder: (context) => LoginPage(),
         ));
-    Fluttertoast.showToast(
-      msg: "Logout Sucessfully",
-      toastLength: Toast.LENGTH_SHORT,
-      timeInSecForIosWeb: 2,
-      backgroundColor: Styles.successColor,
-      textColor: Colors.white,
-      fontSize: 18.0,
-      gravity: ToastGravity.TOP,
-    );
+    toastMessage("Logout Successfully", false);
   }
 
   static final List<Widget> _widgetOptions = <Widget>[

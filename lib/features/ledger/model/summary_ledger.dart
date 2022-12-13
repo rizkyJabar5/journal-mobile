@@ -3,12 +3,12 @@ part 'summary_ledger.g.dart';
 
 @JsonSerializable()
 class SummaryLedger {
-  final String debtStore;
-  final String totalRevenue;
-  final String accountReceivable;
-  final String totalExpense;
-  final String totalGrossSales;
-  final String totalNetSales;
+  final double debtStore;
+  final double totalRevenue;
+  final double accountReceivable;
+  final double totalExpense;
+  final double totalGrossSales;
+  final double totalNetSales;
 
   SummaryLedger(
     this.debtStore,

@@ -1,4 +1,4 @@
-import 'package:journal_florist/features/models/order_details.dart';
+import 'package:journal_florist/features/orders/model/order_details.dart';
 import 'package:json_annotation/json_annotation.dart';
 part 'orders.g.dart';
 
