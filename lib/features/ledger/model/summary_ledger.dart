@@ -1,7 +1,5 @@
 import 'package:json_annotation/json_annotation.dart';
-part 'summary_ledger.g.dart';
 
-@JsonSerializable()
 class SummaryLedger {
   final double debtStore;
   final double totalRevenue;
@@ -18,7 +16,4 @@ class SummaryLedger {
     this.totalGrossSales,
     this.totalNetSales,
   );
-
-  factory SummaryLedger.fromJson(Map<String, dynamic> json) =>
-      _$SummaryLedgerFromJson(json);
 }

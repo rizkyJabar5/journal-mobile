@@ -28,31 +28,6 @@ class _LoginPageState extends State<LoginPage> {
 
   bool passwordHidden = true;
 
-  // Duration get loginTime => Duration(milliseconds: 2250);
-  //
-  // Future<String?> _authUser(LoginData data) {
-  //   debugPrint('Name: ${data.name}, Password: ${data.password}');
-  //   return Future.delayed(loginTime).then((_) {
-  //     if (!users.containsKey(data.name)) {
-  //       return 'User not exists';
-  //     }
-  //     if (users[data.name] != data.password) {
-  //       return 'Password does not match';
-  //     }
-  //     return null;
-  //   });
-  // }
-  //
-  // Future<String?> _recoverPassword(String name) {
-  //   debugPrint('Name: $name');
-  //   return Future.delayed(loginTime).then((_) {
-  //     if (!users.containsKey(name)) {
-  //       return 'User not exists';
-  //     }
-  //     return null;
-  //   });
-  // }
-
   _onFormSubmit() async {
     if (_formKey.currentState?.validate() ?? false) {
       loginService
@@ -60,8 +35,7 @@ class _LoginPageState extends State<LoginPage> {
             _usernameController.text,
             _passwordController.text,
           )
-          .then((_) =>
-              Navigator.of(context).pushReplacement(MaterialPageRoute(
+          .then((_) => Navigator.of(context).pushReplacement(MaterialPageRoute(
                 builder: (context) => BottomBar(),
               )));
     }

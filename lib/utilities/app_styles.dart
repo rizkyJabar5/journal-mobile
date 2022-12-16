@@ -7,10 +7,10 @@ class Styles {
   static Color primaryAccent = Colors.deepPurpleAccent;
   static Color textColor = const Color(0xFF3B3B3B);
   static Color bgColor = Colors.white;
-  static Color successColor = Color.fromARGB(255, 67, 160, 72);
-  static Color warningColor = Color.fromARGB(249, 237, 108, 2);
-  static Color errorColor = Color.fromARGB(255, 211, 47, 47);
-  static Color grey = Color.fromARGB(255, 90, 87, 87);
+  static Color successColor = Color(0x43A048);
+  static Color warningColor = Color(0xED6C02);
+  static Color errorColor = Color(0xD32F2F);
+  static Color grey = Color(0x5A5757);
   static TextStyle headingStyle = TextStyle(
     color: textColor,
     fontSize: 26,

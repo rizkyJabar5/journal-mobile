@@ -2,6 +2,9 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
+import 'package:journal_florist/features/ledger/model/summary_store.dart';
+import 'package:journal_florist/features/ledger/summaries_service.dart';
 import 'package:journal_florist/json/recent_orders.dart';
 import 'package:journal_florist/utilities/app_styles.dart';
 
@@ -13,6 +16,14 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
+  Future<dynamic> _getData() async {
+    final data = await SummaryService().getStore();
+
+    return data;
+  }
+
+  final nominalCurrency = NumberFormat("#,##0.00", "id_ID");
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -78,263 +89,90 @@ class _HomePageState extends State<HomePage> {
                 ),
               ),
               const Gap(10),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Container(
-                    width: 150,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          spreadRadius: 5,
-                          blurRadius: 7,
-                          offset: Offset(0, 5),
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.only(
-                              top: 12, right: 12, left: 12),
-                          child: Icon(
-                            CupertinoIcons.graph_circle,
-                            size: 28,
-                            color: Styles.primaryAccent,
-                          ),
-                        ),
-                        Container(
-                            padding: const EdgeInsets.all(12),
-                            child: Text(
-                              "80",
-                              style: TextStyle(
-                                color: Styles.primaryAccent,
-                                fontSize: 16,
-                                fontFamily: "Poppins",
-                                fontWeight: FontWeight.bold,
+              FutureBuilder(
+                  future: _getData(),
+                  builder: (context, snapshot) {
+                    Widget children;
+
+                    switch (snapshot.connectionState) {
+                      case ConnectionState.waiting:
+                        children = Center(
+                          child: Column(
+                            children: [
+                              SizedBox(
+                                width: 60,
+                                height: 60,
+                                child: CircularProgressIndicator(),
                               ),
-                            )),
-                        Container(
-                          alignment: Alignment.center,
-                          width: Get.width,
-                          decoration: const BoxDecoration(
-                              color: Colors.deepPurple,
-                              borderRadius: BorderRadius.only(
-                                  bottomRight: Radius.circular(12),
-                                  bottomLeft: Radius.circular(12))),
-                          child: Text(
-                            "Last Sale",
-                            style: TextStyle(
-                              color: Styles.bgColor,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 12, vertical: 10),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    width: 150,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          spreadRadius: 5,
-                          blurRadius: 7,
-                          offset: Offset(0, 5),
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.only(
-                              top: 12, right: 12, left: 12),
-                          child: Icon(
-                            CupertinoIcons.waveform_path_ecg,
-                            size: 28,
-                            color: Styles.primaryAccent,
-                          ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.all(12),
-                          child: RichText(
-                            text: TextSpan(
-                                text: "Rp. ",
-                                style: Styles.paragraftStyle,
-                                children: [
-                                  TextSpan(
-                                    text: "4.000.000",
-                                    style: TextStyle(
-                                        color: Styles.primaryAccent,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        fontFamily: "Poppins"),
-                                  ),
-                                ]),
-                          ),
-                        ),
-                        Container(
-                          alignment: Alignment.center,
-                          width: Get.width,
-                          decoration: const BoxDecoration(
-                              color: Colors.deepPurple,
-                              borderRadius: BorderRadius.only(
-                                  bottomRight: Radius.circular(12),
-                                  bottomLeft: Radius.circular(12))),
-                          child: Text(
-                            "Total Revenue",
-                            style: TextStyle(
-                              color: Styles.bgColor,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 12, vertical: 10),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
-              const Gap(20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceAround,
-                children: [
-                  Container(
-                    width: 150,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          spreadRadius: 5,
-                          blurRadius: 7,
-                          offset: Offset(0, 5),
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.only(
-                              top: 12, right: 12, left: 12),
-                          child: Icon(
-                            CupertinoIcons.doc_chart,
-                            size: 28,
-                            color: Styles.primaryAccent,
-                          ),
-                        ),
-                        Container(
-                          padding: const EdgeInsets.all(12),
-                          child: RichText(
-                            text: TextSpan(
-                                text: "Rp. ",
-                                style: Styles.paragraftStyle,
-                                children: [
-                                  TextSpan(
-                                    text: "3.000.000",
-                                    style: TextStyle(
-                                        color: Styles.primaryAccent,
-                                        fontSize: 16,
-                                        fontWeight: FontWeight.bold,
-                                        fontFamily: "Poppins"),
-                                  ),
-                                ]),
-                          ),
-                        ),
-                        Container(
-                          alignment: Alignment.center,
-                          width: Get.width,
-                          decoration: const BoxDecoration(
-                              color: Colors.deepPurple,
-                              borderRadius: BorderRadius.only(
-                                  bottomRight: Radius.circular(12),
-                                  bottomLeft: Radius.circular(12))),
-                          child: Text(
-                            "Total Debt",
-                            style: TextStyle(
-                              color: Styles.bgColor,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 12, vertical: 10),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Container(
-                    width: 150,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(12),
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.grey.withOpacity(0.5),
-                          spreadRadius: 5,
-                          blurRadius: 7,
-                          offset: Offset(0, 5),
-                        ),
-                      ],
-                    ),
-                    child: Column(
-                      children: [
-                        Container(
-                          padding: const EdgeInsets.only(
-                              top: 12, right: 12, left: 12),
-                          child: Icon(
-                            CupertinoIcons.person_3_fill,
-                            size: 28,
-                            color: Styles.primaryAccent,
-                          ),
-                        ),
-                        Container(
-                            padding: const EdgeInsets.all(12),
-                            child: Text(
-                              "150",
-                              style: TextStyle(
-                                color: Styles.primaryAccent,
-                                fontSize: 16,
-                                fontFamily: "Poppins",
-                                fontWeight: FontWeight.bold,
+                              Padding(
+                                padding: EdgeInsets.only(top: 16),
+                                child: Text('Loading...'),
                               ),
-                            )),
-                        Container(
-                          alignment: Alignment.center,
-                          width: Get.width,
-                          decoration: const BoxDecoration(
-                              color: Colors.deepPurple,
-                              borderRadius: BorderRadius.only(
-                                  bottomRight: Radius.circular(12),
-                                  bottomLeft: Radius.circular(12))),
-                          child: Text(
-                            "Customers",
-                            style: TextStyle(
-                              color: Styles.bgColor,
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                            ),
+                            ],
                           ),
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 12, vertical: 10),
-                        ),
-                      ],
-                    ),
-                  ),
-                ],
-              ),
+                        );
+                        break;
+                      case ConnectionState.done:
+                        final store = snapshot.data as SummaryStore;
+
+                        children = Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                _cardStore(
+                                  title: 'Gross Sales Today',
+                                  data:
+                                      '${nominalCurrency.format(store.grossSalesToday)}',
+                                  isCurrency: true,
+                                  icon: Icon(
+                                    CupertinoIcons.doc_chart,
+                                    size: 28,
+                                    color: Styles.primaryAccent,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            const Gap(20),
+                            Row(
+                              mainAxisSize: MainAxisSize.max,
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                _cardStore(
+                                  title: 'Total Products',
+                                  data: '${store.totalProducts}',
+                                  isCurrency: false,
+                                  icon: Icon(
+                                    Icons.production_quantity_limits,
+                                    size: 28,
+                                    color: Styles.primaryAccent,
+                                  ),
+                                ),
+                                _cardStore(
+                                  title: 'Profit Today',
+                                  data:
+                                      '${nominalCurrency.format(store.netProfitSalesToday)}',
+                                  isCurrency: true,
+                                  icon: Icon(
+                                    CupertinoIcons.arrow_up_right_circle_fill,
+                                    size: 28,
+                                    color: Styles.primaryAccent,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ],
+                        );
+                        break;
+                      default:
+                        if (snapshot.hasError)
+                          return Text('Error: ${snapshot.error}');
+                        else
+                          return Text('Result: ${snapshot.data}');
+                    }
+                    return children;
+                  }),
               const Gap(10),
               Divider(
                 color: Colors.black26,
@@ -412,4 +250,73 @@ class _HomePageState extends State<HomePage> {
       ),
     );
   }
+}
+
+Widget _cardStore({
+  Icon? icon,
+  required String title,
+  required dynamic data,
+  required bool isCurrency,
+}) {
+  String _rp = "IDR ";
+
+  return Container(
+    width: 180,
+    decoration: BoxDecoration(
+      borderRadius: BorderRadius.circular(12),
+      color: Colors.white,
+      boxShadow: [
+        BoxShadow(
+          color: Colors.grey.withOpacity(0.5),
+          spreadRadius: 5,
+          blurRadius: 7,
+          offset: Offset(0, 5),
+        ),
+      ],
+    ),
+    child: Column(
+      children: [
+        Container(
+          padding: const EdgeInsets.only(top: 12, right: 12, left: 12),
+          child: icon,
+        ),
+        Container(
+          padding: const EdgeInsets.all(12),
+          child: RichText(
+            text: TextSpan(
+                text: isCurrency ? _rp : "",
+                style: Styles.paragraftStyle,
+                children: [
+                  TextSpan(
+                    text: "${data}",
+                    style: TextStyle(
+                        color: Styles.primaryAccent,
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                        fontFamily: "Poppins"),
+                  ),
+                ]),
+          ),
+        ),
+        Container(
+          alignment: Alignment.center,
+          width: Get.width,
+          decoration: const BoxDecoration(
+              color: Colors.deepPurple,
+              borderRadius: BorderRadius.only(
+                  bottomRight: Radius.circular(12),
+                  bottomLeft: Radius.circular(12))),
+          child: Text(
+            title,
+            style: TextStyle(
+              color: Styles.bgColor,
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+          ),
+          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+        ),
+      ],
+    ),
+  );
 }
