@@ -20,15 +20,15 @@ class SummaryStore {
 
   int? totalProducts;
   int? totalCustomers;
-  double? grossSalesToday;
-  double? netProfitSalesToday;
+  dynamic grossSalesToday;
+  dynamic netProfitSalesToday;
   List<RecentOrder>? recentOrders;
 
   factory SummaryStore.fromJson(Map<String, dynamic> json) {
     final totalProducts = json["totalProducts"];
     final totalCustomers = json["totalCustomers"];
-    final grossSalesToday = json["grossSalesToday"];
-    final netProfitSalesToday = json["netProfitSalesToday"];
+    final grossSalesToday = json["grossSalesToday"] ?? 0;
+    final netProfitSalesToday = json["netProfitSalesToday"] ?? 0;
     final recentOrdersData = json['recentOrders'] as List<dynamic>;
     final recentOrders = recentOrdersData == []
         ? <RecentOrder>[]

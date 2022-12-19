@@ -26,6 +26,22 @@ class _HomePageState extends State<HomePage> {
 
   final timeNow = DateFormat("E, dd MMMM yyyy").format(DateTime.now());
 
+  String _greeting() {
+    String morning = 'Morning ☀️';
+    String afternoon = 'Afternoon 🌤️';
+    String evening = 'Evening 🌙';
+    var hour = DateTime.now().hour;
+    
+    if (hour < 12) {
+      return morning;
+    }
+    if (hour < 17) {
+      return afternoon;
+    }
+    return evening;
+  }
+
+
   Future<dynamic> _getData() async {
     final data = await SummaryService().getStore();
 
@@ -67,8 +83,7 @@ class _HomePageState extends State<HomePage> {
                   padding: const EdgeInsets.all(20),
                   child: FutureBuilder(
                     future: _userLoggedIn,
-                    builder: (context, snapshot) =>
-                    Row(
+                    builder: (context, snapshot) => Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Column(
@@ -88,9 +103,24 @@ class _HomePageState extends State<HomePage> {
                                       ),
                                     ]),
                               ),
-                              Text(
-                                "Good, Morning",
-                                style: Styles.subHeadingStyle,
+                              RichText(
+                                text: TextSpan(
+                                    text: "Good, ",
+                                    style: TextStyle(
+                                        color: Colors.black54,
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.w400,
+                                        fontFamily: "Poppins"),
+                                    children: [
+                                      TextSpan(
+                                        text: _greeting(),
+                                        style: TextStyle(
+                                            color: Colors.amber,
+                                            fontSize: 20,
+                                            fontWeight: FontWeight.bold,
+                                            fontFamily: "Poppins",),
+                                      ),
+                                    ]),
                               ),
                               Text(
                                 "${timeNow}",
@@ -206,12 +236,22 @@ class _HomePageState extends State<HomePage> {
                             ],
                           ),
                         ),
-                        _recentOrders(recentOrder: store.recentOrders)
-                        // ListView.builder(
-                        //   itemBuilder: (BuildContext context, int index) {
-                        //     return Card();
-                        //   },
-                        // )
+                        store.recentOrders!.isEmpty
+                            ? Padding(
+                                padding: const EdgeInsets.only(top: 100),
+                                child: Center(
+                                  child: Text(
+                                    'Sorry, no order for today 😢.',
+                                    style: TextStyle(
+                                      color: Colors.black87,
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.w400,
+                                      fontFamily: "Poppins",
+                                    ),
+                                  ),
+                                ),
+                              )
+                            : _recentOrders(recentOrder: store.recentOrders)
                       ],
                     ),
                   );
@@ -320,12 +360,12 @@ Widget _recentOrders({List<RecentOrder>? recentOrder = const <RecentOrder>[]}) {
         ),
         subtitle: RichText(
           text: TextSpan(
-            text: '${order?.detailOfOrderProducts?.first.productName}\n', style: TextStyle(
-              color: Styles.textColor,
-              fontSize: 14,
-              fontWeight: FontWeight.w400,
-              fontFamily: "Poppins"),
-
+            text: '${order?.detailOfOrderProducts?.first.productName}\n',
+            style: TextStyle(
+                color: Styles.textColor,
+                fontSize: 14,
+                fontWeight: FontWeight.w400,
+                fontFamily: "Poppins"),
             children: [
               TextSpan(
                   text: '${order?.createdAt}', style: Styles.paragraftStyle),
