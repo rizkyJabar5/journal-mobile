@@ -37,7 +37,7 @@ class _LedgerPageState extends State<LedgerPage> {
     });
   }
 
-  String _rp = 'Rp.';
+  String _rp = 'IDR';
   bool _isIncome = true;
 
   void onTap() {
@@ -332,7 +332,7 @@ class _LedgerPageState extends State<LedgerPage> {
             child: RichText(
               textAlign: TextAlign.center,
               text: TextSpan(
-                text: "Rp.\n",
+                text: '${_rp}\n',
                 style: Styles.paragraftStyle,
                 children: [
                   TextSpan(
