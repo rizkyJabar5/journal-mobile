@@ -2,8 +2,12 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:gap/gap.dart';
 import 'package:get/get.dart';
+import 'package:journal_florist/features/ledger/model/summary_ledger.dart';
 import 'package:journal_florist/features/ledger/summaries_service.dart';
 import 'package:journal_florist/utilities/app_styles.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+
+import 'store.dart';
 
 class LedgerPage extends StatefulWidget {
   LedgerPage({Key? key}) : super(key: key);
@@ -13,7 +17,25 @@ class LedgerPage extends StatefulWidget {
 }
 
 class _LedgerPageState extends State<LedgerPage> {
-  late final SummaryService summary = SummaryService();
+  Future<dynamic>? _ledgerSummary;
+
+  Future<dynamic> _getData() async {
+    final data = await SummaryService().getLedger();
+
+    return Future.delayed(Duration(milliseconds: 200)).then((value) => data);
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _ledgerSummary = _getData();
+  }
+
+  Future<void> refreshList() async {
+    setState(() {
+      _ledgerSummary = _getData();
+    });
+  }
 
   String _rp = 'Rp.';
   bool _isIncome = true;
@@ -26,7 +48,6 @@ class _LedgerPageState extends State<LedgerPage> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: AppBar(
           title: Text("Ledger"),
@@ -40,109 +61,141 @@ class _LedgerPageState extends State<LedgerPage> {
           actions: [
             Row(
               children: [
-                Text(
-                  "21 December 2022",
-                  style: TextStyle(
-                      fontSize: 14,
-                      fontWeight: FontWeight.w400,
-                      color: Colors.white,
-                      fontFamily: "Poppins"),
-                ),
-                IconButton(
-                  onPressed: () {},
-                  icon: Icon(
-                    Icons.arrow_drop_down,
-                    semanticLabel: "Date",
-                    size: 28,
-                    color: Colors.white,
+                Padding(
+                  padding: EdgeInsets.only(right: 10),
+                  child: Text(
+                    "${timeNow}",
+                    style: TextStyle(
+                        fontSize: 14,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.white,
+                        fontFamily: "Poppins"),
                   ),
-                )
+                ),
+                // IconButton(
+                //   onPressed: () {},
+                //   icon: Icon(
+                //     Icons.arrow_drop_down,
+                //     semanticLabel: "Date",
+                //     size: 28,
+                //     color: Colors.white,
+                //   ),
+                // )
               ],
             ),
           ],
           backgroundColor: Styles.primaryAccent),
-      body: Column(
-        children: [
-          _appBarBottomSection(),
-          const Gap(20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              _reportCard(
-                icon: Icon(
-                  CupertinoIcons.alarm,
-                  size: 28,
-                  color: Styles.primaryAccent,
+      body: FutureBuilder(
+          future: _ledgerSummary,
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.waiting) {
+              return Center(
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    CircularProgressIndicator(),
+                    Padding(
+                      padding: EdgeInsets.only(top: 16),
+                      child: Text('Loading...'),
+                    ),
+                  ],
                 ),
-                title: "Debt Store",
-                deposit: "5.000.0000",
+              );
+            } else if (snapshot.hasError) {
+              return Text('Error: ${snapshot.error}');
+            }
+
+            final ledger = snapshot.data as SummaryLedger;
+
+            return RefreshIndicator(
+              onRefresh: refreshList,
+              child: Column(
+                children: [
+                  _appBarBottomSection(
+                    netProfit: ledger.totalNetSales,
+                  ),
+                  const Gap(20),
+                  Text(
+                    "Ledger report this year",
+                    style: Styles.paragraftStyle,
+                  ),
+                  const Gap(10),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      _reportCard(
+                        icon: Icon(
+                          MdiIcons.store,
+                          size: 28,
+                          color: Styles.primaryAccent,
+                        ),
+                        title: "Debt Store",
+                        deposit: "${nominalCurrency.format(ledger.debtStore)}",
+                      ),
+                      _reportCard(
+                        icon: Icon(
+                          MdiIcons.trendingUp,
+                          size: 28,
+                          color: Styles.primaryAccent,
+                        ),
+                        title: "Revenue",
+                        deposit:
+                            "${nominalCurrency.format(ledger.totalRevenue)}",
+                      ),
+                    ],
+                  ),
+                  const Gap(30),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      _reportCard(
+                        icon: Icon(
+                          MdiIcons.wallet,
+                          size: 28,
+                          color: Styles.primaryAccent,
+                        ),
+                        title: "Account Receivable",
+                        deposit:
+                            "${nominalCurrency.format(ledger.accountReceivable)}",
+                      ),
+                      _reportCard(
+                        icon: Icon(
+                          MdiIcons.trendingDown,
+                          size: 28,
+                          color: Styles.primaryAccent,
+                        ),
+                        title: "Expense",
+                        deposit:
+                            "${nominalCurrency.format(ledger.totalExpense)}",
+                      )
+                    ],
+                  ),
+                  const Gap(30),
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      _reportCard(
+                        icon: Icon(
+                          MdiIcons.storefront,
+                          size: 28,
+                          color: Styles.primaryAccent,
+                        ),
+                        title: "Gross Sales",
+                        deposit:
+                            "${nominalCurrency.format(ledger.totalGrossSales)}",
+                      ),
+                    ],
+                  ),
+                ],
               ),
-              _reportCard(
-                icon: Icon(
-                  CupertinoIcons.alarm,
-                  size: 28,
-                  color: Styles.primaryAccent,
-                ),
-                title: "Debt Store",
-                deposit: "5.000.0000",
-              ),
-            ],
-          ),
-          const Gap(20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              _reportCard(
-                icon: Icon(
-                  CupertinoIcons.alarm,
-                  size: 28,
-                  color: Styles.primaryAccent,
-                ),
-                title: "Debt Store",
-                deposit: "5.000.0000",
-              ),
-              _reportCard(
-                icon: Icon(
-                  CupertinoIcons.smiley,
-                  size: 28,
-                  color: Styles.primaryAccent,
-                ),
-                title: "Expense",
-                deposit: "2.450.000",
-              )
-            ],
-          ),
-          const Gap(20),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceAround,
-            children: [
-              _reportCard(
-                icon: Icon(
-                  CupertinoIcons.alarm,
-                  size: 28,
-                  color: Styles.primaryAccent,
-                ),
-                title: "Debt Store",
-                deposit: "5.000.0000",
-              ),
-              _reportCard(
-                icon: Icon(
-                  CupertinoIcons.smiley,
-                  size: 28,
-                  color: Styles.primaryAccent,
-                ),
-                title: "Expense",
-                deposit: "2.450.000",
-              )
-            ],
-          ),
-        ],
-      ),
+            );
+          }),
     );
   }
 
   /// App Bar bottom section
-  Container _appBarBottomSection() {
+  Container _appBarBottomSection({dynamic netProfit}) {
     return Container(
       width: MediaQuery.of(context).size.width,
       decoration: BoxDecoration(
@@ -176,7 +229,7 @@ class _LedgerPageState extends State<LedgerPage> {
                 ),
               ),
               Text(
-                '5.000.000',
+                '${nominalCurrency.format(netProfit)}',
                 style: TextStyle(
                   color: Colors.amber,
                   fontSize: 40,
@@ -256,7 +309,7 @@ class _LedgerPageState extends State<LedgerPage> {
     required String deposit,
   }) {
     return Container(
-      width: 150,
+      width: 180,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(12),
         color: Colors.white,
@@ -277,8 +330,9 @@ class _LedgerPageState extends State<LedgerPage> {
           Container(
             padding: const EdgeInsets.all(12),
             child: RichText(
+              textAlign: TextAlign.center,
               text: TextSpan(
-                text: "Rp. ",
+                text: "Rp.\n",
                 style: Styles.paragraftStyle,
                 children: [
                   TextSpan(

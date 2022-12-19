@@ -12,6 +12,7 @@ import 'dart:math' as math;
 
 final nominalCurrency = NumberFormat("#,##0.00", "id_ID");
 final _rp = "IDR ";
+final timeNow = DateFormat("E, dd MMMM yyyy").format(DateTime.now());
 
 class HomePage extends StatefulWidget {
   HomePage({Key? key}) : super(key: key);
@@ -24,7 +25,6 @@ class _HomePageState extends State<HomePage> {
   Future<dynamic>? _storeSummary;
   Future<dynamic>? _userLoggedIn;
 
-  final timeNow = DateFormat("E, dd MMMM yyyy").format(DateTime.now());
 
   String _greeting() {
     String morning = 'Morning ☀️';
