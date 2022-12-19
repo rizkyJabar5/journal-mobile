@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_login/flutter_login.dart';
 import 'package:gap/gap.dart';
-import 'package:get/get.dart';
 import 'package:journal_florist/features/login/login_service.dart';
-import 'package:journal_florist/screens/home.dart';
 import 'package:journal_florist/widgets/bottom_bar.dart';
-import 'package:journal_florist/widgets/toast.dart';
 
 const users = const {
   'dribbble@gmail.com': '12345',

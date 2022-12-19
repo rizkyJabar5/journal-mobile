@@ -1,6 +1,7 @@
 import 'package:json_annotation/json_annotation.dart';
 
-part 'error_response.g.dart';
+import '../../../generated/json/error_response.g.dart';
+
 
 @JsonSerializable()
 class ErrorResponse {
@@ -10,14 +11,14 @@ class ErrorResponse {
   String? timestamp;
   int? status;
 
-  ErrorResponse(
+  ErrorResponse({
     this.path,
     this.message,
     this.error,
     this.timestamp,
     this.status,
-  );
+  });
 
   factory ErrorResponse.fromJson(Map<String, dynamic> json) =>
-      _$ErrorResponseFromJson(json);
+      $ErrorResponseFromJson(json);
 }

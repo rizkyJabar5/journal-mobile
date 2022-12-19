@@ -1,8 +1,6 @@
-import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:journal_florist/features/networking/api_interceptor.dart';
-import 'package:journal_florist/features/ledger/model/summary_ledger.dart';
 import 'package:journal_florist/features/networking/endpoints.dart';
 
 import 'model/summary_store.dart';
@@ -15,13 +13,15 @@ class SummaryService {
 
     try {
       final response = await api.getRequest(Endpoints.store);
-      print("Data => ${response.data['data']}");
+      print("Data => ${response.data['data']['recentOrders']}");
+
       data = summaryStoreFromJson(response.data['data']);
-      print("Data => ${data.recentOrders}");
+      print("Data => ${data}");
     } on DioError catch (e) {
       throw e.error.toString();
     }
 
+    await Future.delayed(Duration(milliseconds: 200));
     return data;
   }
 

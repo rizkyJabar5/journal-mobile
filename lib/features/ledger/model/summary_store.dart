@@ -24,14 +24,24 @@ class SummaryStore {
   double? netProfitSalesToday;
   List<RecentOrder>? recentOrders;
 
-  factory SummaryStore.fromJson(Map<String, dynamic> json) => SummaryStore(
-        totalProducts: json["totalProducts"],
-        totalCustomers: json["totalCustomers"],
-        grossSalesToday: json["grossSalesToday"],
-        netProfitSalesToday: json["netProfitSalesToday"],
-        recentOrders: List<RecentOrder>.from(
-            json["recentOrders"].map((x) => RecentOrder.fromJson(x))),
-      );
+  factory SummaryStore.fromJson(Map<String, dynamic> json) {
+    final totalProducts = json["totalProducts"];
+    final totalCustomers = json["totalCustomers"];
+    final grossSalesToday = json["grossSalesToday"];
+    final netProfitSalesToday = json["netProfitSalesToday"];
+    final recentOrdersData = json['recentOrders'] as List<dynamic>;
+    final recentOrders = recentOrdersData == []
+        ? <RecentOrder>[]
+        : List<RecentOrder>.of(
+            recentOrdersData.map((x) => RecentOrder.fromJson(x)));
+
+    return SummaryStore(
+        totalProducts: totalProducts,
+        totalCustomers: totalCustomers,
+        grossSalesToday: grossSalesToday,
+        netProfitSalesToday: netProfitSalesToday,
+        recentOrders: recentOrders);
+  }
 
   Map<String, dynamic> toJson() => {
         "totalProducts": totalProducts,
@@ -87,7 +97,7 @@ class RecentOrder {
         customerName: json["customerName"] ?? "",
         phoneNumber: json["phoneNumber"] ?? "",
         detailOfOrderProducts: List<DetailOfOrderProduct>.from(
-            json["detailOfOrderProducts"]
+            (json["detailOfOrderProducts"] ?? [])
                 .map((x) => DetailOfOrderProduct.fromJson(x))),
         totalOrderAmount: json["totalOrderAmount"],
         paymentStatus: json["paymentStatus"] ?? "",

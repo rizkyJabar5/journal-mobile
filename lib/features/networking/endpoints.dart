@@ -3,4 +3,5 @@ class Endpoints {
   static const login = "/auth/login";
   static const store = "/summaries/store";
   static const ledger = "/summaries/ledger";
+  static const user = "/users";
 }

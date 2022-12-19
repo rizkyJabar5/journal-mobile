@@ -8,17 +8,23 @@ class TokenRepository {
     await storage.write(key: "journal", value: accessToken);
   }
 
-  Future<String?> getUserToken() async {
+  Future<String> getUserToken() async {
     String? accessToken = await storage.read(key: "journal");
     if (accessToken != null && !tokenHasExpired(accessToken)) {
       return accessToken;
     }
 
-    return null;
+    return Future(() => '');
+  }
+
+  Future<bool> hasToken() async {
+    final accessToken = await storage.read(key: "journal");
+
+    return accessToken != null ? true : false;
   }
 
   bool tokenHasExpired(String? accessToken) {
-    if(accessToken == null) return true;
+    if (accessToken == null) return true;
 
     return Jwt.isExpired(accessToken);
   }

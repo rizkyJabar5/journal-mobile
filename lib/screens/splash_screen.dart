@@ -1,18 +1,19 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:journal_florist/features/networking/token_repository.dart';
 import 'package:journal_florist/screens/login.dart';
+import 'package:journal_florist/widgets/bottom_bar.dart';
 
-class SplasScreen extends StatefulWidget {
-  const SplasScreen({Key? key}) : super(key: key);
+class SplashScreen extends StatefulWidget {
+  const SplashScreen({Key? key}) : super(key: key);
 
   @override
-  State<SplasScreen> createState() => _SplashScreenState();
+  State<SplashScreen> createState() => _SplashScreenState();
 }
 
-class _SplashScreenState extends State<SplasScreen> {
-  bool isVisible = false;
-  double percent = 0.0;
+class _SplashScreenState extends State<SplashScreen> {
+  final storage = TokenRepository();
 
   @override
   void initState() {
@@ -22,10 +23,21 @@ class _SplashScreenState extends State<SplasScreen> {
 
   startSplashScreen() async {
     var duration = const Duration(seconds: 3);
+    final hasToken = await storage.hasToken();
+
     return Timer(duration, () {
+      if (!hasToken) {
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(builder: (_) {
+            return LoginPage();
+          }),
+        );
+        return;
+      }
+
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(builder: (_) {
-          return LoginPage();
+          return BottomBar();
         }),
       );
     });

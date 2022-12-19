@@ -20,7 +20,6 @@ class LoginService {
 
     if (response.statusCode == 200) {
       tokenRepository.setUserToken(accessToken: response.data['accessToken']);
-      print(tokenRepository.getUserToken().toString());
 
       return LoginResponse.fromJson(response.data);
     }

@@ -1,5 +1,6 @@
 import 'package:json_annotation/json_annotation.dart';
-part 'login_response.g.dart';
+
+import '../../../generated/json/login_response.g.dart';
 
 @JsonSerializable(createToJson: false)
 class LoginResponse {
@@ -26,5 +27,5 @@ class LoginResponse {
   });
 
   factory LoginResponse.fromJson(Map<String, dynamic> json) =>
-      _$LoginResponseFromJson(json);
+      $LoginResponseFromJson(json);
 }
