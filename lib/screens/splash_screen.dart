@@ -54,11 +54,11 @@ class _SplashScreenState extends State<SplashScreen> {
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Image.asset(
-              "assets/images/logo.jpg",
-              width: 500,
-              height: 500,
-            ),
+              Image.asset(
+                "assets/images/logo.png",
+                width: 500,
+                height: 500,
+              ),
             RichText(
               textAlign: TextAlign.center,
               text: TextSpan(

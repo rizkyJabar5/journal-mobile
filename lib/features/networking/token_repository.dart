@@ -17,6 +17,10 @@ class TokenRepository {
     return Future(() => '');
   }
 
+  Future<void> deleteUserToken() async{
+    await storage.delete(key: "journal");
+  }
+
   Future<bool> hasToken() async {
     final accessToken = await storage.read(key: "journal");
 
