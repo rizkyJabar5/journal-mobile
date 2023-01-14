@@ -45,7 +45,7 @@ class _HomePageState extends State<HomePage> {
   Future<dynamic> _getData() async {
     final data = await SummaryService().getStore();
 
-    return Future.delayed(Duration(milliseconds: 200)).then((value) => data);
+    return Future.delayed(Duration(milliseconds: 1000)).then((value) => data);
   }
 
   @override
